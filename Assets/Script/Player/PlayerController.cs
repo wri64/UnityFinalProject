@@ -29,7 +29,9 @@ public class PlayerController : MonoBehaviour
 
     public static PlayerController Instance;
     PlayerStateList pState;
-    private bool canDash;
+
+	[Header("Dash Setting")]
+	private bool canDash;
     private bool dashed;
     private float gravity;
 
