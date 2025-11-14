@@ -7,10 +7,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float walkSpeed = 1;
     private float xAxis;
 
-    
-    [SerializeField] private float jumpForce = 45;
+	[Header("Vertical Movement Setting")]
+	[SerializeField] private float jumpForce = 45;
     private int jumpBufferCounter;
     [SerializeField] private int jumpBufferFrames;
+    private float coyoteTimeCounter = 0;
+    [SerializeField] private float coyoteTime;
+    private int airJumpCounter = 0 ;
+    [SerializeField] private int maxAirJumps;
 
     [Header("Ground Check Setting")]
     [SerializeField] private Transform groundCheckPoint;
@@ -92,12 +96,20 @@ public class PlayerController : MonoBehaviour
 
             pState.jumping = false;
         }
+
         if (!pState.jumping)
         {
-            if (jumpBufferCounter > 0 && Grounded())
+            if (jumpBufferCounter > 0 && coyoteTimeCounter > 0)
             {
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForce);
-            pState.jumping = true;
+                
+                pState.jumping = true;
+            }
+            else if(!Grounded() && airJumpCounter < maxAirJumps && Input.GetButtonDown("Jump"))
+            {
+                pState.jumping = true;
+                airJumpCounter++;
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForce);
             }
         }
     }
@@ -106,7 +118,14 @@ public class PlayerController : MonoBehaviour
     {
         if (Grounded())
         { 
-        pState.jumping = false;
+            pState.jumping = false;
+            coyoteTimeCounter = coyoteTime;
+            airJumpCounter = 0;
+
+        }
+        else 
+        {
+            coyoteTimeCounter -= Time.deltaTime;
         }
         if (Input.GetButtonDown("Jump"))
         {

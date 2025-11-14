@@ -834,6 +834,8 @@ MonoBehaviour:
   walkSpeed: 20
   jumpForce: 10
   jumpBufferFrames: 8
+  coyoteTime: 1
+  maxAirJumps: 1
   groundCheckPoint: {fileID: 572653089}
   groundCheckY: 0.2
   groundCheckX: 0.5
