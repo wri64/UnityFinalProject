@@ -27,11 +27,24 @@ public class PlayerController : MonoBehaviour
         GetInput();
         Move();
         Jump();
+        Flip();
     }
 
     void GetInput()
     {
         xAxis = Input.GetAxisRaw("Horizontal");
+    }
+
+    void Flip()
+    {
+        if (xAxis < 0)
+        {
+            transform.localScale = new Vector2(-1, transform.localScale.y);
+        }
+        else if (xAxis > 0)
+        {
+            transform.localScale = new Vector2(1, transform.localScale.y);
+        }
     }
     private void Move()
     {
@@ -59,7 +72,7 @@ public class PlayerController : MonoBehaviour
         if(Input.GetButtonDown("Jump") && Grounded())
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForce);
-        }
+        } 
     }
 }
 
