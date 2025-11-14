@@ -649,6 +649,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81003e3698be9fc4f98023d02309d268, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rb: {fileID: 0}
+  walkSpeed: 50
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

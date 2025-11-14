@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody2D rb;
+	[Header("Horizontal Movement Setting")]
+	[SerializeField] private Rigidbody2D rb;
 
-    private float walkSpeed = 1;
+
+	[SerializeField] private float walkSpeed = 1;
 
     private float xAxis;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
