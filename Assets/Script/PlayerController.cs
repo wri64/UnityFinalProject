@@ -52,6 +52,10 @@ public class PlayerController : MonoBehaviour
 
     void Jump()
     {
+        if (Input.GetButtonUp("Jump") && rb.linearVelocity.y < 0)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, 0);
+        }
         if(Input.GetButtonDown("Jump") && Grounded())
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpForce);
