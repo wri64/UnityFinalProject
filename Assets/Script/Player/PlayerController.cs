@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -22,8 +23,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float groundCheckX = 0.5f;
     [SerializeField] private LayerMask whatIsGround;
 
+    [SerializeField] private float dashSpeed;
+    [SerializeField] private float dashTime;
+    [SerializeField] private float dashCooldown;
+
     public static PlayerController Instance;
     PlayerStateList pState;
+    private bool canDash;
+    private bool dashed;
+    private float gravity;
 
     private void Awake()
     {
@@ -43,6 +51,7 @@ public class PlayerController : MonoBehaviour
     {
         pState = GetComponent<PlayerStateList>();
         rb = GetComponent<Rigidbody2D>();
+        gravity = rb.gravityScale;
     }
 
     // Update is called once per frame
@@ -53,6 +62,8 @@ public class PlayerController : MonoBehaviour
         Jump();
         Flip();
         UpdateJumpVariables();
+        if(pState.dashing) return;
+        StartDash();
     }
 
     void GetInput()
@@ -74,6 +85,35 @@ public class PlayerController : MonoBehaviour
     private void Move()
     {
         rb.linearVelocity = new Vector2(walkSpeed * xAxis, rb.linearVelocity.y);
+    }
+
+    void StartDash()
+    {
+        if(Input.GetButtonDown("Dash") && canDash && !dashed)
+        {
+            StartCoroutine(Dash());
+            dashed = true;
+        }
+
+        if(Grounded())
+        {
+            dashed = false;
+        }
+    }
+
+    IEnumerator Dash()
+    {
+        canDash = false;
+        pState.dashing = true;
+        //anim.SetTrigger("Dashing");
+        rb.gravityScale = 0;
+        rb.linearVelocity = new Vector2(transform.localScale.x * dashSpeed, 0);
+        yield return new WaitForSeconds(dashTime);
+        rb.gravityScale = gravity;
+        pState.dashing = false;
+        yield return new WaitForSeconds(dashCooldown);
+        canDash = true;
+
     }
 
     public bool Grounded()
