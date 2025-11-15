@@ -35,6 +35,7 @@ public class PlayerController : MonoBehaviour
     private bool dashed;
     private float gravity;
 
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
